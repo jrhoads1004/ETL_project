@@ -32,7 +32,15 @@ if isinstance(file_data, list):
 else: 
     candidate_collection.insert_one(file_data) 
 
+jsonpath = os.path.join("Resources", "candidate_finance_2.json")
 
+with open(jsonpath) as datafile:
+    finance_data = json.load(datafile)
+
+if isinstance(finance_data, list): 
+    candidate_collection.insert_many(finance_data)   
+else: 
+    candidate_collection.insert_one(finance_data) 
 
 # Set route
 @app.route('/')
