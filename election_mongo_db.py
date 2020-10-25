@@ -20,7 +20,7 @@ candidate_collection = db.candidate
 
 # Drops collection if available to remove duplicates
 # NOTE: This is only for demo purposes.
-# db.candidate.drop()
+#db.candidate.drop()
 
 jsonpath = os.path.join("Resources", "popular_votes_years.json")
 
