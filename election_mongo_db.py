@@ -1,4 +1,7 @@
+import os
+import json
 import pymongo
+from pymongo import MongoClient
 from pprint import pprint
 import datetime
 from flask import Flask, render_template
@@ -13,44 +16,48 @@ client = pymongo.MongoClient(conn)
 
 # Declare the database
 db = client.election_db
+candidate_collection = db.candidate
 
 # Drops collection if available to remove duplicates
 # NOTE: This is only for demo purposes.
-db.candidates.drop()
+# db.candidate.drop()
 
-db.candidates.insert_one(
-    [
-        {
-            'name': 'Donald Trump',
-            'political_party': 'REPUBLICAN'
-        }    
-    ]
-)    
+jsonpath = os.path.join("Resources", "popular_votes_years.json")
+
+with open(jsonpath) as datafile:
+    file_data = json.load(datafile)
+
+if isinstance(file_data, list): 
+    candidate_collection.insert_many(file_data)   
+else: 
+    candidate_collection.insert_one(file_data) 
+
+
+
+# Set route
+@app.route('/')
+def index():
+    # Store the entire team collection in a list
+    Name = list(db.name.find())
+    print(Name)
+
+#     # Return the template with the players list passed in
+#     return render_template('index.html', Name=Name)
+
+# Define route to insert new players into the database
+@app.route('/insert/<name>/<position>')
+def insert(Name, Votes, VotePct, year):
+    new_candidate = {
+                    'name': Name, 
+                    'Votes': Votes,
+                    "VotePct": VotePct,
+                    "year": year
+                  }
     
-#     [
-#         {
-#             "year": "Year",
-#             "political_party": 'REPUBLICAN or DEMOCRATIC', 
-#             "candidate_id": "Candidate ID", 
-#             "vote_total": "PopularVote Total",  
-#             'date': datetime.datetime.utcnow()
-#         }
-#     ]
-# )
+    db.insert_one(new_candidate)
+    return f"{name} has been inserted into the database!"
 
-# # Creates a collection in the database and inserts one document
-# db.candidates.insert_one(
-#     [
-#         {
-#             "year": "Year",
-#             "political_party": 'REPUBLICAN or DEMOCRATIC', 
-#             "candidate_id": "Candidate ID", 
-#             "vote_total": "PopularVote Total",  
-#             'date': datetime.datetime.utcnow()
-#         }
-#     ]
-# )
-
+    
 
 # # Ask the user for input. Store information into variables.
 # # Note: the '\n' in the print statement below just prints an empty line in our terminal before printing our text.
