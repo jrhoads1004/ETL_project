@@ -1,4 +1,5 @@
 CREATE TABLE IF NOT EXISTS candidate_financial(
+	key VARCHAR(100) PRIMARY KEY,
 	candidate_election_year VARCHAR(4), 
 	candidate_id VARCHAR(50), 
 	candidate_name VARCHAR(100),
@@ -11,6 +12,7 @@ CREATE TABLE IF NOT EXISTS candidate_financial(
 
 
 CREATE TABLE IF NOT EXISTS candidate_votes(
+	key VARCHAR(100) PRIMARY KEY,
 	name VARCHAR(100), 
 	votes INT, 
 	votepct DECIMAL, 
@@ -26,5 +28,4 @@ f.candidate_election_year, f.candidate_name, f.party_full, f.total_receipts, f.t
 v.votes, v.votepct
 FROM candidate_financial f
 JOIN candidate_votes v
-	ON f.candidate_name=v.name
-		AND f.candidate_election_year=v.year;
+	ON f.key=v.key;
