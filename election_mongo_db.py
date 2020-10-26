@@ -22,20 +22,20 @@ candidate_collection = db.candidate
 # NOTE: This is only for demo purposes.
 # db.candidate.drop()
 
-jsonpath = os.path.join("Resources", "popular_votes_years.json")
+csvpath = os.path.join("Resources", "popular_votes_years.csv")
 
-with open(jsonpath) as datafile:
-    file_data = json.load(datafile)
+with open(csvpath) as datafile:
+    file_data = csv.load(datafile)
 
 if isinstance(file_data, list): 
     candidate_collection.insert_many(file_data)   
 else: 
     candidate_collection.insert_one(file_data) 
 
-jsonpath = os.path.join("Resources", "candidate_finance_2.json")
+csvpath = os.path.join("Resources", "candidate_finance_2.csv")
 
-with open(jsonpath) as datafile:
-    finance_data = json.load(datafile)
+with open(csvpath) as datafile:
+    finance_data = csv.load(datafile)
 
 if isinstance(finance_data, list): 
     candidate_collection.insert_many(finance_data)   
@@ -65,7 +65,7 @@ def insert(Name, Votes, VotePct, year):
     db.insert_one(new_candidate_vote)
     return f"{name} has been inserted into the database!"
 
-#if __name__ == "__main__":
-#app.run(debug=True)
+if __name__ == "__main__":
+app.run(debug=True)
   
 
