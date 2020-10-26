@@ -15,9 +15,8 @@
     <table class="table table-striped table table-sm">
       <thead>
         <tr>
-          <th scope="col">Candidate ID</th>
-          <th scope="col">Candidate Name</th>
           <th scope="col">Election Year</th>
+          <th scope="col">Candidate Name</th>
           <th scope="col">Party</th>
           <th scope="col">Total Receipts</th>
           <th scope="col">Total Disbursements</th>
@@ -29,17 +28,17 @@
       <tbody>
 
         <!-- Within the table body, create a new table row (<tr>) for each candidate in our database. -->
-        {% for candidate in candidate_info %}
+        {% for candidate in results %}
           <tr>
-            <td>{{ candidate.candidate_id }}</td>
-            <td>{{ candidate.candidate_name }}</td>
-            <td>{{ candidate.candidate_election_year }}</td>
-            <td>{{ candidate.party_full }}</td>
-            <td>{{ candidate.total_receipts }}</td>
-            <td>{{ candidate.total_disbursements }}</td>
-            <td>{{ candidate.cash_on_hand_end_period }}</td>
+            <td>{{ Candidate_Financial.candidate_election_year }}</td>
+            <td>{{ Candidate_Financial.candidate_name }}</td>
+            <td>{{ Candidate_Financial.party_full }}</td>
+            <td>{{ Candidate_Financial.total_receipts }}</td>
+            <td>{{ Candidate_Financial.total_disbursements }}</td>
+            <td>{{ Candidate_Financial.cash_on_hand_end_period }}</td>
+            <td>{{ Candidate_Votes.votes }}</td>
             <td>{{ candidate.Votes }}</td>
-            <td>{{ candidate.VotePct }}</td>
+            <td>{{ Candidate_Votes.votepct }}</td>
           </tr>
         {% endfor %}
 

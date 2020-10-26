@@ -2,8 +2,30 @@ import sqlalchemy
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, func, and_
-from flask import Flask, render_template
-import pymongo
+
+from flask import Flask, jsonify
+#import pymongo
+
+#################################################
+# Database Setup
+#################################################
+
+# Create engine
+pg_user = 'postgres'
+pg_password = 'Gr@ham*1334'
+db_name = 'election_db'
+
+connection_string = f"{pg_user}:{pg_password}@localhost:5432/{db_name}"
+engine = create_engine(f'postgresql://{connection_string}')
+
+# reflect an existing database into a new model
+Base = automap_base()
+Base.prepare(engine, reflect=True)
+Base.classes.keys()
+
+# Save reference to the table
+Candidate_Financial = Base.classes.candidate_financial
+Candidate_Votes = Base.classes.candidate_votes
 
 #################################################
 # Flask Setup
@@ -11,31 +33,51 @@ import pymongo
 app = Flask(__name__)
 
 #################################################
-# Database Setup
-#################################################
-
-# Create variable for the connection string
-conn = 'mongodb://localhost:27017'
-client = pymongo.MongoClient(conn)
-
-# connect to mongo db and collection
-db = client.election_db
-
-# Pass connection string to the pymongo instance.
-candidate_collection = db.candidate
-
-#################################################
 # Flask Routes
 #################################################
 
-@app.route("/")
-def index():
-    # write a statement that finds all the items in the db and sets it to a variable
-    candidate_info = list(candidate_collection.find())
-    print(candidate_info)
+@app.route("/summary")
+def summary():
+    """Return a list of all candidates financial data and election results for that year"""
 
-    # render an index.html template and pass it the data you retrieved from the database
-    return render_template("index.html", candidate_info=candidate_info)
+    # Open a communication session with the database
+    session = Session(engine)
 
-if __name__ == "__main__":
+    results = session.query(Candidate_Financial.candidate_election_year, Candidate_Financial.candidate_name, Candidate_Financial.party_full,  Candidate_Financial.total_receipts, Candidate_Financial.total_disbursements, Candidate_Financial.cash_on_hand_end_period, Candidate_Votes.votes, Candidate_Votes.votepct).\
+        filter(Candidate_Financial.key == Candidate_Votes.key).\
+        order_by(Candidate_Financial.candidate_election_year).all()
+    
+    # Convert the query results to a dictionary 
+    summary_list = []
+    for candidate in results:
+        summary_dict = {}
+        summary_dict["election_year"] = Candidate_Financial.candidate_election_year
+        summary_dict["name"] = Candidate_Financial.candidate_name
+        summary_dict["party_full"] = Candidate_Financial.party_full
+        summary_dict["total_receipts"] = Candidate_Financial.total_receipts
+        summary_dict["total_disbursements"] = Candidate_Financial.total_disbursements
+        summary_dict["cash_on_hand_end_period"] = Candidate_Financial.cash_on_hand_end_period
+        summary_dict["votes"] = Candidate_Votes.votes
+        summary_dict["vote"] = Candidate_Votes.votepct
+        summary_list.append(summary_dict)
+
+    # close the session to end the communication with the database
+    session.close()
+
+    # Return the JSON representation of the dictionary
+    return jsonify(summary_list)
+
+if __name__ == '__main__':
     app.run(debug=True)
+
+# @app.route("/candidates")
+# def candidates():
+#     """Return a list of candidates that have ran for president"""
+
+# @app.route("/years")
+# def candidates():
+#     """Return a list of years in the dataset"""
+
+# @app.route("/financial_votes")
+# def candidates():
+#     """Return a list of all candidates financial data and election results"""
