@@ -66,6 +66,6 @@ def insert(Name, Votes, VotePct, year):
     return f"{name} has been inserted into the database!"
 
 if __name__ == "__main__":
-app.run(debug=True)
+    app.run(debug=True)
   
 
