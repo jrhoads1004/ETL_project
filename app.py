@@ -5,13 +5,20 @@ from sqlalchemy import create_engine, func, and_
 
 from flask import Flask, jsonify
 
+
+#################################################
+# Flask Setup
+#################################################
+app = Flask(__name__)
+
+
 #################################################
 # Database Setup
 #################################################
 
 # Create engine
 pg_user = 'postgres'
-pg_password = '****'
+pg_password = 'Gr@ham*1334'
 db_name = 'election_db'
 
 connection_string = f"{pg_user}:{pg_password}@localhost:5432/{db_name}"
@@ -27,11 +34,6 @@ Candidate_Financial = Base.classes.candidate_financial
 Candidate_Votes = Base.classes.candidate_votes
 
 #################################################
-# Flask Setup
-#################################################
-app = Flask(__name__)
-
-#################################################
 # Flask Routes
 #################################################
 
@@ -42,9 +44,8 @@ def summary():
     # Open a communication session with the database
     session = Session(engine)
 
-    results = session.query(Candidate_Financial.candidate_election_year, Candidate_Financial.candidate_name, Candidate_Financial.party_full,  Candidate_Financial.total_receipts, Candidate_Financial.total_disbursements, Candidate_Financial.cash_on_hand_end_period, Candidate_Votes.votes, Candidate_Votes.votepct).\
-        filter(Candidate_Financial.key == Candidate_Votes.key).\
-        order_by(Candidate_Financial.candidate_election_year).all()
+    results = session.query(Candidate_Financial.candidate_election_year, Candidate_Financial.candidate_name, Candidate_Financial.party_full,  Candidate_Financial.total_receipts, Candidate_Financial.total_disbursements, Candidate_Financial.cash_on_hand_end_period).\
+            order_by(Candidate_Financial.candidate_election_year).all()
     
     # Convert the query results to a dictionary 
     summary_list = []
@@ -56,8 +57,6 @@ def summary():
         summary_dict["total_receipts"] = Candidate_Financial.total_receipts
         summary_dict["total_disbursements"] = Candidate_Financial.total_disbursements
         summary_dict["cash_on_hand_end_period"] = Candidate_Financial.cash_on_hand_end_period
-        summary_dict["votes"] = Candidate_Votes.votes
-        summary_dict["vote"] = Candidate_Votes.votepct
         summary_list.append(summary_dict)
 
     # close the session to end the communication with the database
