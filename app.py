@@ -18,7 +18,7 @@ app = Flask(__name__)
 
 # Create engine
 pg_user = 'postgres'
-pg_password = 'Gr@ham*1334'
+pg_password = '****'
 db_name = 'election_db'
 
 connection_string = f"{pg_user}:{pg_password}@localhost:5432/{db_name}"
