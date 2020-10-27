@@ -37,30 +37,58 @@ Candidate_Votes = Base.classes.candidate_votes
 # Flask Routes
 #################################################
 
+@app.route("/")
+def home():
+    return("Home Page")
+
 @app.route("/summary")
 def summary():
-    """Return a list of all candidates financial data and election results for that year"""
-
-    # Open a communication session with the database
+    """Return a list of candidates that have ran for president"""
     session = Session(engine)
 
-    results = session.query(Candidate_Financial.candidate_election_year, Candidate_Financial.candidate_name, Candidate_Financial.party_full,  Candidate_Financial.total_receipts, Candidate_Financial.total_disbursements, Candidate_Financial.cash_on_hand_end_period).\
-            order_by(Candidate_Financial.candidate_election_year).all()
-    
-    # Convert the query results to a dictionary 
-    summary_list = []
-    for candidate in results:
-        summary_dict = {}
-        summary_dict["election_year"] = Candidate_Financial.candidate_election_year
-        summary_dict["name"] = Candidate_Financial.candidate_name
-        summary_dict["party_full"] = Candidate_Financial.party_full
-        summary_dict["total_receipts"] = Candidate_Financial.total_receipts
-        summary_dict["total_disbursements"] = Candidate_Financial.total_disbursements
-        summary_dict["cash_on_hand_end_period"] = Candidate_Financial.cash_on_hand_end_period
-        summary_list.append(summary_dict)
+    results = session.query(Candidate_Votes, Candidate_Financial).filter(Candidate_Votes.key == Candidate_Financial.key).all()
 
     # close the session to end the communication with the database
     session.close()
+
+    # Convert the query results to a dictionary
+    summary_list = []
+    for v, f in results:
+        summary_dict = {}
+        summary_dict["election_year"] = f.candidate_election_year
+        summary_dict["name"] = f.candidate_name
+        summary_dict["party_full"] = f.party_full
+        summary_dict["total_receipts"] = str(f.total_receipts)
+        summary_dict["total_disbursements"] = str(f.total_disbursements)
+        summary_dict["cash_on_hand_end_period"] = str(f.cash_on_hand_end_period)
+        summary_dict["votes"] = str(v.votes)
+        summary_dict["votepct"] = str(v.votepct)
+        summary_list.append(summary_dict)
+
+    # Return the JSON representation of the dictionary
+    return jsonify(summary_list)
+
+
+@app.route("/results/<given_year>")
+def yr_results(given_year):
+    """Return a list of candidates that have ran for president"""
+    session = Session(engine)
+
+    results = session.query(Candidate_Votes, Candidate_Financial).filter(and_(Candidate_Votes.key == Candidate_Financial.key, Candidate_Votes.year == given_year)).all()
+
+    # close the session to end the communication with the database
+    session.close()
+
+    # Convert the query results to a dictionary
+    summary_list = []
+    for v, f in results:
+        summary_dict = {}
+        summary_dict["name"] = v.name
+        summary_dict["total_recieipts"] = str(f.total_receipts)
+        summary_dict["votes"] = str(v.votes)
+        summary_dict["votepct"] = str(v.votepct)
+
+        summary_list.append(summary_dict)
 
     # Return the JSON representation of the dictionary
     return jsonify(summary_list)

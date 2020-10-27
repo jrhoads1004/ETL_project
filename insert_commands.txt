@@ -1,0 +1,2 @@
+\COPY candidate_financial FROM 'C:\Users\Vega\Documents\Classwork\HomeWork\ETL_project\candidate_finance_2.csv' DELIMITER ',' CSV HEADER;
+\COPY candidate_votes FROM 'C:\Users\Vega\Documents\Classwork\HomeWork\ETL_project\popular_votes_years.csv' DELIMITER ',' CSV HEADER;
