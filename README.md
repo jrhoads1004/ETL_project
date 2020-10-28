@@ -91,6 +91,11 @@ This project uses ETL on presidential candidate data from the years 2000 – 201
 
 ## Flask Application
 
+### Summary Route:
+![summary_route](https://github.com/jrhoads1004/ETL_project/blob/main/images/Flask%20Summary%20Route.png)
+
+### Variable Year Route (year 2000 is displayed below):
+
 **Install a web app to Investigate Presidential Election Data**  
 * search by a certain year from years 2000-2016
 
