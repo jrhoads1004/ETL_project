@@ -10,6 +10,7 @@ from flask import Flask, jsonify
 # Flask Setup
 #################################################
 app = Flask(__name__)
+app.config['JSON_SORT_KEYS'] = False
 
 
 #################################################
@@ -89,6 +90,7 @@ def yr_results(given_year):
     for v, f in results:
         summary_dict = {}
         summary_dict["name"] = v.name
+        summary_dict["party_full"] = f.party_full
         summary_dict["total_receipts"] = str(f.total_receipts)
         summary_dict["total_disbursements"] = str(f.total_disbursements)
         summary_dict["votes"] = str(v.votes)
