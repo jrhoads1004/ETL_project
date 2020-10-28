@@ -60,7 +60,7 @@ This project uses ETL on presidential candidate data from the years 2000 – 201
 * **Why SQL?**  The tables in the database are related in that they both contain presidential candidate information by year.  The two tables are joined by a key referencing their name and election year.
 
 * Load Steps:
-  * Created tables and scheme in Postgres (PgAdmin?)
+  * Created tables and scheme in Postgres (PgAdmin)
   * In Jupyter Notebook:
     * Connected to the database
     * Verified tables existed
