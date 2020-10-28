@@ -81,7 +81,7 @@ This project uses ETL on presidential candidate data from the years 2000 – 201
 * total_disbursements DECIMAL
 * cash_on_hand_end_period DECIMAL
 
-** Table 2 - candidate_votes **
+** Table 2 - candidate_votes
  * key VARCHAR(100) PRIMARY KEY
   * key VARCHAR(100) PRIMARY KEY
   * name VARCHAR(100)
