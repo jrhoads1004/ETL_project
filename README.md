@@ -18,8 +18,6 @@
 **Possible investigation that could be done with the final database:**
 * Campaign Fund data and Presidential Election data can be combined to determine:
 * Does raising more funds lead to a candidate’s election?
-* Which states fund more presidential campaigns?
-* Does a higher state funding lead to a candidate winning that state?
 * Which presidential candidate has more/less debt?
 
 **Final Database:**  Relational database due to the relationship between the presidential candidate column between the two datasets
