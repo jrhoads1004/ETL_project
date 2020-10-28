@@ -8,12 +8,12 @@
 **Setup**
 * Download pgAdmin - https://www.pgadmin.org/download/
 * Create Database in pgAdmin
-* Right click on your created Database and select query tool
-* Add the code from (election_db_sql.sql) to create the tables to the database 
+* Run schema file to create the tables - (election_db_sql.sql)
+* Open jupyter notebook under your ETL_project directory and run - MainNotebook.ipynb
 * Make sure pgAdmin is still open and run the following command - python app.py
-* go to your web browser and type in localhost:5000/
+* Go to your web browser and type in localhost:5000/
 * localhost:5000/summary will give you the complete list
-* if you want to select a certain year then type - localhost:5000/results/yyyy 
+* If you want to select a certain year then type - localhost:5000/results/yyyy 
 
 **Possible investigation that could be done with the final database:**
 * Campaign Fund data and Presidential Election data can be combined to determine:
