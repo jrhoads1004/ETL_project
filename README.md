@@ -83,11 +83,10 @@ This project uses ETL on presidential candidate data from the years 2000 – 201
 
 **Table 2 - candidate_votes**
  * key VARCHAR(100) PRIMARY KEY
-  * key VARCHAR(100) PRIMARY KEY
-  * name VARCHAR(100)
-  * votes INT
-  * votepct DECIMAL
-  * year VARCHAR(4)
+ * name VARCHAR(100)
+ * votes INT
+ * votepct DECIMAL
+ * year VARCHAR(4)
 
 ## Flask Application
 
