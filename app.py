@@ -18,7 +18,7 @@ app = Flask(__name__)
 
 # Create engine
 pg_user = 'postgres'
-pg_password = '****'
+pg_password = 'NextStory86@'
 db_name = 'election_db'
 
 connection_string = f"{pg_user}:{pg_password}@localhost:5432/{db_name}"
@@ -39,7 +39,12 @@ Candidate_Votes = Base.classes.candidate_votes
 
 @app.route("/")
 def home():
-    return("Home Page")
+    return (
+        f"HOME PAGE</br>"
+        f"==== Available Routes ====<br/>"
+        f"/summary<br/>"
+        f"/results/yyyy"
+    )
 
 @app.route("/summary")
 def summary():
@@ -84,7 +89,8 @@ def yr_results(given_year):
     for v, f in results:
         summary_dict = {}
         summary_dict["name"] = v.name
-        summary_dict["total_recieipts"] = str(f.total_receipts)
+        summary_dict["total_receipts"] = str(f.total_receipts)
+        summary_dict["total_disbursements"] = str(f.total_disbursements)
         summary_dict["votes"] = str(v.votes)
         summary_dict["votepct"] = str(v.votepct)
 
